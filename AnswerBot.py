@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Finds submissions with questions in them and replies as Rick would
 import praw
 import collections
 import os
