@@ -15,8 +15,8 @@ import my_auth
 # Setup
 
 # Set up praw
-existential_rick_bot = "AnswerBot"
-user_agent = existential_rick_bot + " Answers quesitons. See https://github.com/rough93/AnswerBot"
+answer_bot = "AnswerBot"
+user_agent = answer_bot + " Answers quesitons. See https://github.com/rough93/AnswerBot"
 
 # Login
 r = praw.Reddit(user_agent=user_agent)
@@ -38,10 +38,10 @@ processed_filename = "submissions_already_processed.txt"
 # Helper Functions
 
 questions = ['why', 'happen', 'think?', 'what'] # Match if any of these are found in message
-def isExistentialQuestion(message):
+def isQuestion(message):
   return '?' in message and any([q in message.lower() for q in questions])
 
-def getAnswerToExistentialQuestion():
+def getAnswerToQuestion():
   return "I have no idea what I'm doing"
 
 def getResponseFooter():
@@ -111,9 +111,9 @@ while running:
         continue
       
       # check if submission title is a question
-      if isExistentialQuestion(submission.title):
+      if isQuestion(submission.title):
         # generate response
-        msg = "%s%s" % (getAnswerToExistentialQuestion(), getResponseFooter())
+        msg = "%s%s" % (getAnswerToQuestion(), getResponseFooter())
         # respond, keep trying till success
         while True:
           try:
