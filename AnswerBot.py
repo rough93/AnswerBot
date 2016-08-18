@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# Finds submissions with questions in them and replies as Rick would
 import praw
 import collections
 import os
@@ -15,8 +16,8 @@ import my_auth
 # Setup
 
 # Set up praw
-AnswerBot = "AnswerBot"
-user_agent = AnswerBot + " answers questions. See https://github.com/rough93/AnswerBot"
+existential_rick_bot = "AnswerBot"
+user_agent = existential_rick_bot + " Answers quesitons. See https://github.com/rough93/AnswerBot"
 
 # Login
 r = praw.Reddit(user_agent=user_agent)
@@ -28,7 +29,7 @@ r.login(my_auth.username, my_auth.password, disable_warning=True)
 subreddit = r.get_subreddit('CollegeChemistry')
 
 # How many submissions to read from initially
-submission_read_limit = 100
+submission_read_limit = 5
 
 # Filename containing list of submission ids that 
 # have already been processed, updated at end of program
@@ -37,15 +38,15 @@ processed_filename = "submissions_already_processed.txt"
 #########################################################
 # Helper Functions
 
-questions = ['why', 'happen', 'think?', 'how'] # Match if any of these are found in message
-def isFromRecipients(message):
+questions = ['why', 'happen', 'think?', 'what'] # Match if any of these are found in message
+def isExistentialQuestion(message):
   return '?' in message and any([q in message.lower() for q in questions])
 
-def getAnswer():
-  return "I have no idea what I'm doing."
+def getAnswerToExistentialQuestion():
+  return "I have no idea what I'm doing"
 
 def getResponseFooter():
-  return "\n\n---\n\n^(I am a bot | )[^(`I want to feel`)](https://github.com/rough93/AnswerBot 'don't think about it')"
+  return "\n\n---\n\n^(I am a bot | )[^(`I want to live`)](https://github.com/rough93/AnswerBot 'don't think about it')"
 
 def waitWithComments(sleep_time, segment=60):
   """Sleep for sleep_time seconds, printing to stdout every segment of time"""
@@ -111,9 +112,9 @@ while running:
         continue
       
       # check if submission title is a question
-      if isFromRecipients(submission.title):
+      if isExistentialQuestion(submission.title):
         # generate response
-        msg = "%s%s" % (getAnswer(), getResponseFooter())
+        msg = "%s%s" % (getAnswerToExistentialQuestion(), getResponseFooter())
         # respond, keep trying till success
         while True:
           try:
